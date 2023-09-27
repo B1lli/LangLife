@@ -13,7 +13,7 @@ import pandas as pd
 import random
 from typing import List, Optional, Dict
 
-openai.api_key = input('填入自己的apikey，修改此行以写死')
+openai.api_key = input('填入自己的apikey，修改utils内的该行以写死')
 # 字符转码函数
 def decode_chr(s):
     if type(s) != str:print(f'本次decode_chr类型非str，为{type(s)}')
@@ -36,17 +36,23 @@ def decode_chr(s):
     return result
 
 
+
+
 def get_random_word(random_source_csv=None, word_num=1, column_name=None):
-    if not random_source_csv: random_source_csv = 'random_words.csv'
-    df = pd.read_csv ( random_source_csv )
+    if not random_source_csv:
+        random_source_csv = 'random_words.csv'
+    df = pd.read_csv(random_source_csv)
+
     if column_name:
         if column_name in df.columns:
-            return random.sample( list(df[column_name].dropna()), word_num )
+            return random.sample(list(df[column_name].dropna()), word_num)
         else:
-            raise ValueError(f"列名{column_name}在词库里没找到")
+            raise ValueError(f"列名 {column_name} 在词库里没找到")
     else:
-        column = random.choice(df.columns)
-        return random.sample( list(df[column].dropna()), word_num )
+        column = random.choice(df.columns.tolist())
+        return random.sample(list(df[column].dropna()), word_num)
+
+
 
 
 def check_parameters(json_object: Dict, parameters: List[str]) -> List[str]:
